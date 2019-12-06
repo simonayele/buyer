@@ -1,49 +1,39 @@
 class OrderItemsController < ApplicationController
- 
-def create
-  chosen_product = Product.find(params[:product_id])
-  current_cart = @current_cart
-  
- 
-  if current_cart.products.include?(chosen_product)
-    @order_item = current_cart.order_items.find_by(:product_id => chosen_product)
+  before_action :current_cart, only: [:create]
 
-    @order_item.quantity += 1
-  else
-    @order_item = OrderItem.new
-    @order_item.cart = current_cart
-    @order_item.product = chosen_product
+  def index
+    @order_items = current_cart.order_items
   end
 
-  @order_item.save
-  redirect_to cart_path(current_cart)
-end
-
-def destroy
-  @order_item = OrderItem.find(params[:id])
-  @order_item.destroy
-  redirect_to cart_path(@current_cart)
-end
-
-def add_quantity
-  @order_item = OrderItem.find(params[:id])
-  @order_item.quantity += 1
-  @order_item.save
-  redirect_to cart_path(@current_cart)
-end
-
-def reduce_quantity
-  @order_item = OrderItem.find(params[:id])
-  if @order_item.quantity > 1
-    @order_item.quantity -= 1
+ def create
+    @cart = current_cart
+    product = Product.find(params[:product_id])
+    @order_item = @cart.order_items.build(:product => product)
+    respond_to do |format|
+      if @order_item.save
+        format.html { redirect_to(@order_item.cart,
+          :notice => 'Line item was successfully created.') }
+        format.xml { render :xml => @order_item,
+          :status => :created, :location => @order_item }
+      else
+        format.html { render :action => "new" }
+        format.xml { render :xml => @order_item.errors,
+          :status => :unprocessable_entity }
+      end
+    end
   end
-  @order_item.save
-  redirect_to cart_path(@current_cart)
-end
 
-
-private
-  def order_item_params
-    params.require(:order_item).permit(:quantity,:product_id, :cart_id)
+  def destroy
+    current_cart.remove_item(id: params[:id])
+    redirect_to cart_path
   end
+
+  private
+    
+    def order_item_params
+      params.require(:order_item).permit(:product_id, :quantity, :cart_id)
+    end
 end
+
+
+

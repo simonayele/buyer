@@ -1,19 +1,14 @@
 class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
-  before_save :update_total
+  before_save :update_subtotal
+  
   
 
-  def calculate_total
-    self.order_items.collect { |item| item.product.price * item.quantity }.sum
+ private
+ def update_subtotal
+    self[:subtotal] = subtotal
   end
 
-  private
-
- 
-
-  def update_total
-    self.total_price = calculate_total
-  end
-end
+ end
 

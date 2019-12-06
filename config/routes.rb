@@ -4,16 +4,10 @@ Rails.application.routes.draw do
   root "products#index"
 
 
-get 'carts/:id' => "carts#show", as: "cart"
-delete 'carts/:id' => "carts#destroy"
 
-post 'order_items/:id/add' => "order_items#add_quantity", as: "order_item_add"
-post 'order_items/:id/reduce' => "order_items#reduce_quantity", as: "order_item_reduce"
-post 'order_items' => "order_items#create"
-get 'order_items/:id' => "order_items#show", as: "order_item"
-delete 'order_items/:id' => "order_items#destroy"
-
+resource :cart, only: [:show]
 resources :products
 resources :orders
+resources :order_items
 
 end

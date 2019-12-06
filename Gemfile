@@ -28,6 +28,7 @@ gem 'devise'
 gem 'carrierwave', '~> 2.0'
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'stripe'
+gem "figaro"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

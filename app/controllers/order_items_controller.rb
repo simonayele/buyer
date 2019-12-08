@@ -1,14 +1,25 @@
 class OrderItemsController < ApplicationController
-  before_action :current_cart, only: [:create]
+  before_action :current_cart
 
   def index
-    @order_items = current_cart.order_items
+    @order_items = OrderItem.all
+  end
+
+  def show
+
+  end
+
+  def new
+    @order_item = OrderItem.new
+  end
+
+  def edit
   end
 
  def create
     @cart = current_cart
     product = Product.find(params[:product_id])
-    @order_item = @cart.order_items.build(:product => product)
+    @order_item = @cart.add_product(product.id)
     respond_to do |format|
       if @order_item.save
         format.html { redirect_to(@order_item.cart,

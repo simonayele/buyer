@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
 
 resources :carts
-resources :products
+resources :products  
 resources :orders
 resources :order_items
 

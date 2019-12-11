@@ -53,6 +53,18 @@ class ProductsController < ApplicationController
     end
   end
 
+  def display_cart
+    @cart = find_cart
+    @items = @cart.items
+  end
+
+  def add_to_cart
+    product = Product.find(params[:id])
+    @cart = find_cart
+    @cart.add_product(product)
+    redirect_to(:action => 'display_cart')
+  end
+
 
 private
 
@@ -60,5 +72,5 @@ private
     params.require(:product).permit(:name, :price, :description, :picture)
   end
 
-    
 end
+

@@ -1,5 +1,8 @@
 class OrderItemsController < ApplicationController
-  before_action :current_cart
+  include CurrentCart
+  before_action :set_cart, only: [:create]
+  before_action :set_order_item, only: [:show, :edit, :update, :destroy]
+
 
   def index
     @order_items = OrderItem.all
@@ -18,21 +21,16 @@ class OrderItemsController < ApplicationController
 
  def create
     @cart = current_cart
-    product = Product.find(params[:product_id])
-    @order_item = @cart.add_product(product.id)
-    respond_to do |format|
-      if @order_item.save
-        format.html { redirect_to(@order_item.cart,
-          :notice => 'Line item was successfully created.') }
-        format.xml { render :xml => @order_item,
-          :status => :created, :location => @order_item }
-      else
-        format.html { render :action => "new" }
-        format.xml { render :xml => @order_item.errors,
-          :status => :unprocessable_entity }
-      end
+    @product = Product.find(params[:product_id])
+    @order_item = @cart.add_product(@product)
+
+    if @order_item.save
+        redirect_to root_url, notice:'Product added to Cart'
+    else
+        render :new
     end
   end
+  
 
   def destroy
     current_cart.remove_item(id: params[:id])

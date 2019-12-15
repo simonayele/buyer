@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   end
 
   def index
-    @products = Product.all
+    @products = Product.paginate(page: params[:page], per_page:6)
     @cart = current_cart
   end
 

@@ -32,7 +32,7 @@ class OrderItemsController < ApplicationController
         else
           format.html { render action: 'new' }
           format.json { render json: @order_item.errors,
-          status: :unprocessable_entity }
+          status: :created, location: @order_item }
         end
       end
     end

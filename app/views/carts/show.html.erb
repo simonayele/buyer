@@ -1,8 +1,9 @@
 <h1>Cart</h1>
 
-
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 card form">
 <div class="cart_title">Your Cart</div>
 <table>
+
 <% @cart.order_items.each do |item| %>
 <tr>
 <td><%= item.quantity %>&times;</td>
@@ -15,6 +16,9 @@
 <td class="total_cell"><%= number_to_currency(@cart.total_price) %></td>
 </tr>
 </table>
+<div class="gram-actions float-right">
 <%= button_to "Checkout", new_order_path, :method => :get %>
 <%= button_to 'Empty cart', @cart, :method => :delete,
 :confirm => 'Are you sure?' %>
+</div>
+</div>

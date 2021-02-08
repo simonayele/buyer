@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'simple_form'
 gem 'devise'
-gem 'carrierwave', '~> 2.0'
+gem 'carrierwave', '~> 2.1'
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'stripe'
 gem "figaro"
